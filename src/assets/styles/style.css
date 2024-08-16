@@ -1,0 +1,943 @@
+.Collapsible__trigger {
+  display: block;
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+  border: 1px solid #343a40;
+  padding: 10px;
+  background: #0c0c0d;
+  color: white;
+  border-radius: 25px;
+}
+
+.Collapsible__trigger:hover {
+  background: #343a40;
+}
+
+.Collapsible__trigger:after {
+  content: "\25BC";
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: block;
+  transition: transform 300ms;
+}
+.Collapsible__trigger.is-open:after {
+  transform: rotateZ(180deg);
+}
+.Collapsible__trigger.is-disabled {
+  opacity: 0.5;
+  background-color: grey;
+}
+
+.App {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Cover the entire viewport height */
+  overflow: hidden; /* Hide horizontal overflow if needed */
+}
+
+.dark {
+  background-color: #282828;
+  color: #ffffff; /* Your text color for better contrast */
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Cover the entire viewport height */
+  overflow: hidden; /* Hide horizontal overflow if needed */
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-input {
+  width: 60px;
+  height: 38px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-width: 1px;
+}
+
+.col.pagination-container {
+  padding-right: 0;
+  padding-left: 0;
+  height: 38px;
+}
+
+.btn.pagination-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
+}
+
+.btn.pagination-next {
+  border-radius: 25px;
+  margin-left: 10px;
+}
+
+.btn.pagination-prev {
+  border-radius: 25px;
+  margin-right: 10px;
+}
+
+.thumbnail {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  height: 450px;
+  width: 300px;
+  margin-bottom: 0;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5);
+}
+
+.studio-thumbnail {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  max-height: 300px;
+  width: 300px;
+  margin-bottom: 0;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5);
+}
+
+.thumbnail-synopsis {
+  bottom: 0;
+}
+
+.container-secondary {
+  text-align: left;
+  /* max-width: 428.41px; */
+  max-height: 200px;
+  position: relative;
+  /* margin-top: 10%; */
+}
+
+.fulldetails-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: center;
+  width: 100%;
+  margin-top: 20%;
+  max-width: 425px;
+  max-height: 285px;
+  overflow-y: scroll;
+}
+
+/* Make scrollbar extremely thin for WebKit-based browsers (Chrome, Safari, etc.) */
+.fulldetails-container::-webkit-scrollbar {
+  width: 4px; /* Adjust the width as needed */
+}
+
+/* Style the scrollbar thumb (optional) */
+.fulldetails-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Change the color if needed */
+  border-radius: 4px; /* Add rounded corners to the thumb */
+}
+
+._loading_overlay_spinner.css-50etie {
+  margin-top: 200%;
+}
+
+.loader {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+}
+.loader:after {
+  box-shadow: 0 2px 0 #0dcaf0 inset;
+  animation: rotate 2s linear infinite;
+}
+
+.overlay_loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+}
+
+.overlay_loader:before,
+.overlay_loader:after {
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+}
+.overlay_loader:after {
+  box-shadow: 0 2px 0 #0dcaf0 inset;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.zoomed {
+  transform: scale(1); /* Initial scale */
+  transition: transform 0.2s ease; /* Transition effect with a duration of 0.3 seconds */
+}
+
+.zoomed:hover {
+  transform: scale(1.05); /* Scale up to 1.1 times when hovered */
+}
+
+.zoomed-landing-page {
+  transform: scale(1); /* Initial scale */
+  transition: transform 0.2s ease; /* Transition effect with a duration of 0.3 seconds */
+}
+
+.zoomed-landing-page:hover {
+  transform: scale(1.05); /* Scale up to 1.1 times when hovered */
+}
+
+div.text-on-top {
+  text-align: center;
+}
+
+.pseudo-blur {
+  /* backdrop-filter: blur(1px); */
+  min-height: 550px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+}
+
+.pseudo-blur-dark {
+  /* backdrop-filter: blur(1px); */
+  min-height: 550px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+}
+
+.pseudo-blur-banner {
+  /* backdrop-filter: blur(1px); */
+  min-height: 550px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+}
+
+.pseudo-blur-banner-dark {
+  /* backdrop-filter: blur(1px); */
+  min-height: 550px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+}
+
+.blur-details {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+  color: #000;
+  margin-bottom: 15px;
+  margin-top: -20%;
+}
+
+.blur-details.dark-mode {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  border: none;
+  color: white;
+  margin-bottom: 15px;
+  margin-top: -20%;
+}
+
+.fadeContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.fadeContainerDark {
+  position: relative;
+  overflow: hidden;
+}
+
+.animeListsToggles {
+  display: flex;
+  overflow-x: auto;
+  align-items: center;
+  max-width: 900px;
+  position: relative;
+  justify-content: center;
+}
+
+.inputToggles {
+  display: flex;
+  overflow-x: auto;
+  align-items: center;
+  max-width: 900px;
+  position: relative;
+  justify-content: center;
+}
+
+.inputTogglesManga {
+  display: flex;
+  overflow-x: auto;
+  align-items: center;
+  max-width: 900px;
+  position: relative;
+}
+
+.inputToggleContainer {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+.btn-group {
+  display: inline-flex;
+}
+
+@media (min-width: 768px) {
+  .inputToggleContainer {
+    justify-content: center;
+  }
+}
+
+.recommendations {
+  display: flex;
+  overflow-x: auto;
+  align-items: center;
+  gap: 10px;
+  max-width: 900px;
+  height: 300px;
+  position: relative;
+}
+
+.recommendations.active {
+  background: rgba(255, 255, 255, 0.3);
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  transform: scale(1);
+}
+
+.recommendations > div {
+  flex-basis: 170px;
+  position: relative;
+  cursor: pointer;
+}
+
+.recommendations > div > img {
+  object-fit: cover;
+  max-width: 100%;
+  min-width: 170px;
+  height: 250px;
+  vertical-align: middle;
+  border-radius: 10px;
+}
+
+.recommendations div:hover .overlay {
+  transform: scale(1);
+}
+
+.recommendations::-webkit-scrollbar {
+  width: 4px; /* Adjust the width as needed */
+}
+
+/* Style the scrollbar thumb (optional) */
+.recommendations::-webkit-scrollbar-thumb {
+  background-color: #888; /* Change the color if needed */
+  border-radius: 4px; /* Add rounded corners to the thumb */
+}
+
+.loadContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30vh;
+}
+
+.image-gallery {
+  padding-left: 0;
+  z-index: -999;
+}
+.image-gallery > div.cards {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding-left: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+thead th {
+  background-color: #2a082c;
+  color: rgb(12, 12, 12);
+}
+
+.image-gallery > div > div.cards {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding-left: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.image-gallery > li {
+  flex-basis: 170px; /* width: 350px; */
+  position: relative;
+  cursor: pointer;
+}
+
+.image-gallery li img {
+  object-fit: cover;
+  max-width: 100%;
+  min-width: 190px;
+  height: 275px;
+  vertical-align: middle;
+  border-radius: 10px;
+}
+
+/* hover */
+.image-gallery li:hover .overlay {
+  height: 275px;
+  transform: scale(1);
+}
+
+/* .image-gallery::after {
+  content: "";
+  flex-basis: 170px;
+} */
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(28, 28, 28, 0.502);
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  transition: all 0.2s 0.1s ease-in-out;
+  color: #fff;
+  border-radius: 5px;
+  /* center overlay text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+/* Default styles for light mode */
+.list-group-item {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Styles for dark mode */
+.dark-mode .list-group-item {
+  background-color: #282828; /* Dark background color */
+  color: #fff; /* Light text color for contrast */
+  border: 1px solid #444;
+}
+
+.toggle-container {
+  width: auto;
+  display: inline-block;
+  margin-right: 5px; /* Adjust the margin as needed to control spacing */
+}
+
+.details-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-start; /* Adjust alignment as needed */
+}
+
+.text-container {
+  text-align: left;
+  flex-grow: 1;
+  max-width: 315.69px;
+}
+
+.gauge-container {
+  display: flex;
+  flex-direction: column; /* Create a column layout */
+  align-items: center; /* Horizontally center items */
+  justify-content: center; /* Vertically center items */
+  max-width: 120px;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.gauge-wrapper {
+  max-width: 90px;
+}
+
+.ranked-wrapper {
+  max-width: auto;
+}
+
+.summary-container {
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  max-width: 200px;
+}
+
+.synopsis {
+  max-height: 100%;
+  overflow-y: hidden; /* Hide overflowed content */
+  padding: 0 10px;
+}
+
+.synopsis p {
+  margin: 0; /* Remove default margin to avoid extra spacing */
+  padding: 0; /* Remove default padding to avoid extra spacing */
+}
+
+.synopsis::after {
+  content: ""; /* Create a pseudo-element */
+  position: absolute; /* Position it absolutely */
+  bottom: 0; /* Position it at the bottom */
+  left: 0; /* Position it at the left */
+  width: 100%; /* Take up the full width */
+  height: 20px; /* Set the height for ellipsis */
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    white
+  ); /* Create a gradient background */
+}
+
+.synopsisDark {
+  max-height: 100%;
+  overflow-y: hidden; /* Hide overflowed content */
+  padding: 0 10px;
+}
+
+.synopsisDark p {
+  margin: 0; /* Remove default margin to avoid extra spacing */
+  padding: 0; /* Remove default padding to avoid extra spacing */
+}
+
+.synopsisDark::after {
+  content: ""; /* Create a pseudo-element */
+  position: absolute; /* Position it absolutely */
+  bottom: 0; /* Position it at the bottom */
+  left: 0; /* Position it at the left */
+  width: 100%; /* Take up the full width */
+  height: 20px; /* Set the height for ellipsis */
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(28, 28, 28, 1.5)
+  ); /* Create a gradient background */
+}
+
+.imgContainer {
+  height: 400px;
+}
+
+.chapters-button-dark {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  background-color: #0dcaf0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chapters-button {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  background-color: #212529;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.scroll-button-dark {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0dcaf0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.scroll-button-dark:hover {
+  background-color: #31d2f2;
+}
+
+.scroll-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #212529;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.scroll-button:hover {
+  background-color: #424649;
+}
+
+.react-switch {
+  vertical-align: middle;
+  margin-left: 5px;
+  margin-bottom: 3px;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: "hidden";
+}
+
+.btn-primary {
+  margin-bottom: 15px;
+}
+
+.btn-default {
+  background-color: slategrey;
+  margin-bottom: 15px;
+}
+
+.boxContainer {
+  display: table;
+  height: 650px;
+}
+
+@media (max-width: 600px) {
+  .boxContainer {
+    flex-basis: 400px;
+  }
+}
+
+@media (max-width: 400px) {
+  .boxContainer {
+    flex-basis: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-gallery li img {
+    min-width: 145px;
+    max-width: 145px;
+    height: 215px;
+  }
+
+  .image-gallery li:hover .overlay {
+    height: 100%;
+    transform: scale(1);
+  }
+
+  .authorMangaDiv {
+    min-width: 145px;
+    max-width: 145px;
+    height: 210px;
+  }
+
+  .authorAnimeDiv {
+    min-width: 145px;
+    max-width: 145px;
+    height: 235px;
+  }
+
+  .studioAnimeDiv {
+    min-width: 145px;
+    max-width: 145px;
+  }
+
+  .cards li div div img {
+    min-height: 190px;
+    height: 190px;
+  }
+
+  .cards li:hover .overlay {
+    height: 100%;
+    transform: scale(1);
+  }
+
+  #authorAnimeList:hover .overlay {
+    height: 190px;
+    transform: scale(1);
+  }
+
+  #authorMangaList:hover .overlay {
+    height: 190px;
+    transform: scale(1);
+  }
+
+  #studioAnimeList:hover .overlay {
+    height: 190px;
+    transform: scale(1);
+  }
+
+  .pseudo-blur {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border: none;
+  }
+
+  .pseudo-blur-dark {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border: none;
+  }
+}
+
+/* for any screen less than 420px */
+@media (max-width: 420px) {
+  body {
+    font-size: smaller;
+  }
+  h3 {
+    font-size: medium;
+  }
+  h5 {
+    font-size: medium;
+  }
+  .thumbnail {
+    max-width: 300px;
+  }
+  .text-container {
+    font-size: smaller;
+    max-width: 175px;
+  }
+  .text-container > h2 {
+    font-size: medium;
+  }
+  .ranked-wrapper {
+    font-size: x-small;
+  }
+  .gauge-container {
+    max-width: 75px;
+  }
+  #returnBtn {
+    font-size: smaller;
+  }
+  .fadeContainer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fadeContainerDark {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .separator {
+    margin-bottom: -10px;
+    margin-top: -10px;
+  }
+
+  .lead {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 464px) {
+  .image-gallery > div > div.cards::after {
+    content: "";
+    flex: auto;
+  }
+}
+
+@media (max-width: 885px) {
+  .thumbnail {
+    height: 350px;
+    width: 250px;
+  }
+
+  .studio-thumbnail {
+    max-height: 250px;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 830px) {
+  .thumbnail {
+    height: 300px;
+    width: 200px;
+  }
+
+  .studio-thumbnail {
+    max-height: 200px;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 760px) {
+  .blur-container {
+    max-height: 210px;
+  }
+  .fulldetails-container {
+    max-width: 100%;
+  }
+  .thumbnail {
+    max-width: 150px;
+    max-height: 225px;
+  }
+  .blur-details {
+    flex-direction: column;
+  }
+
+  .blur-details.dark-mode {
+    flex-direction: column;
+  }
+  .fulldetails-container {
+    margin-top: 5%;
+  }
+
+  .text-container {
+    max-width: none;
+  }
+}
+
+@media (max-width: 464px) {
+  .image-gallery > div > div.cards {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 448px) {
+  .pagination-input {
+    max-width: 40px;
+  }
+  .col.pagination-container {
+    max-width: 40px;
+  }
+}
+
+@media (max-width: 420px) {
+  .pagination-input {
+    height: 30.66px;
+  }
+  .col.pagination-container {
+    height: 30.66px;
+  }
+  .btn {
+    font-size: smaller;
+  }
+
+  .form-control {
+    font-size: smaller;
+  }
+
+  .thumbnail {
+    max-width: 100px;
+    max-height: 150px;
+  }
+
+  .fulldetails-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    width: 100%;
+    max-height: 285px;
+    overflow-y: scroll;
+  }
+}
+
+@media (max-width: 360px) {
+  .inputToggles {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 355px) {
+  .pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .row.pagination-container-full {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .pagination-input {
+    width: 40px;
+  }
+  .col.pagination-container {
+    width: 40px;
+  }
+
+  .btn.pagination-button {
+    width: 40px;
+  }
+  .btn.pagination-next {
+    margin-left: 0;
+  }
+  .btn.pagination-prev {
+    margin-right: 0;
+  }
+}
