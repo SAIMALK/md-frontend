@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 'https://md-frontend.up.railway.app', // or any port you prefer
+    port: 3000, // or any port you prefer
   },
   resolve: {
     alias: {
