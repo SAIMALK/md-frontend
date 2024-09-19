@@ -18,9 +18,6 @@ function Footer() {
               </Link>
             </p>
           </div>
-          <p style={{position :"absolute" ,marginLeft:"10%" , marginTop:"-30px"}}>About Us</p>
-
-          <p style={{position :"absolute" ,marginLeft:"80%" , marginTop:"-30px"}}>Contact Us</p>
           </>
   )
 }
