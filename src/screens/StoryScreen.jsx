@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import React from "react";
+import React  from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import AnimatedProgressProvider from "../plugins/AnimatedProgressProvider";
 import "react-circular-progressbar/dist/styles.css";
@@ -7,20 +7,54 @@ import Commentsection from "../components/Commentsection";
 import { easeQuadIn } from "d3-ease";
 import "../assets/styles/style.css";
 import { FaReadme } from "react-icons/fa6";
-import { useGetStoryDetailsQuery } from "../slices/storysApiSlice";
+import { useGetStoryDetailsQuery , useCreateReviewMutation,} from "../slices/storysApiSlice";
 import Message from "../components/Message";
-
+import Loader from "../components/Loader";
+import {
+  Row,
+  Col,
+  ListGroup,
+  Button,
+  Form,
+} from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import Rating from '../components/Rating';
 const StoryScreen = () => {
   const { id: storyId } = useParams();
   const {
     data: story,
     isLoading,
+    refetch,
     error,
   } = useGetStoryDetailsQuery(storyId, {
     // Add options to populate the author field
     select: "author", // Select only the author field
     populate: "author",
   });
+  const [rating, setRating] = React.useState(0);
+  const [comment, setComment] = React.useState('');
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [createReview, { isLoading: loadingStoryReview }] =
+    useCreateReviewMutation();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      await createReview({
+        storyId,
+        rating,
+        comment,
+      }).unwrap();
+      refetch();
+      toast.success('Review created successfully');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const [backgroundBlur, setBackgroundBlur] = React.useState({});
   const blurDetailsClass = `blur-details`;
@@ -227,11 +261,74 @@ const StoryScreen = () => {
               </ListGroup>
             </Col> */}
               <Commentsection
-                url={`https://md-frontend.up.railway.app/story/${storyId}`} // Set the URL dynamically
+                url={`https://md-frontend.netlify.app/story/${storyId}`} // Set the URL dynamically
                 identifier={storyId} // Set the identifier dynamically
                 title={story.title}
               />
             </div>
+            <Row className='review'>
+            <Col md={6}>
+              <h2>Reviews</h2>
+              {story.reviews.length === 0 && <Message>No Reviews</Message>}
+              <ListGroup variant='flush'>
+                {story.reviews.map((review) => (
+                  <ListGroup.Item key={review._id}>
+                    <strong>{review.name}</strong>
+                    <Rating value={review.rating} />
+                    <p>{review.createdAt.substring(0, 10)}</p>
+                    <p>{review.comment}</p>
+                  </ListGroup.Item>
+                ))}
+                <ListGroup.Item>
+                  <h2>Write a Customer Review</h2>
+
+                  {loadingStoryReview && <Loader />}
+
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group className='my-2' controlId='rating'>
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control
+                          as='select'
+                          required
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value=''>Select...</option>
+                          <option value='1'>1 - Poor</option>
+                          <option value='2'>2 - Fair</option>
+                          <option value='3'>3 - Good</option>
+                          <option value='4'>4 - Very Good</option>
+                          <option value='5'>5 - Excellent</option>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group className='my-2' controlId='comment'>
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          row='3'
+                          required
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button
+                        disabled={loadingStoryReview}
+                        type='submit'
+                        variant='primary'
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      Please <Link to='/login'>sign in</Link> to write a review
+                    </Message>
+                  )}
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
+          </Row>
             <Link
               className="btn  me-4"
               style={{backgroundColor:"#000000" , color:"#ffffff" ,borderRadius: "25px"}}
