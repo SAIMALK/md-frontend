@@ -19,7 +19,6 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Rating from '../components/Rating';
 const StoryScreen = () => {
   const { id: storyId } = useParams();
   const {
@@ -32,7 +31,7 @@ const StoryScreen = () => {
     select: "author", // Select only the author field
     populate: "author",
   });
-  const [rating, setRating] = React.useState(0);
+  
   const [comment, setComment] = React.useState('');
 
   const { userInfo } = useSelector((state) => state.auth);
@@ -42,20 +41,41 @@ const StoryScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    try {
-      await createReview({
-        storyId,
-        rating,
-        comment,
-      }).unwrap();
-      refetch();
-      toast.success('Review created successfully');
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
+    console.log(comment);
+    fetch("http://127.0.0.1:8000/predict/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sentence: comment }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Response from Python API:", data);
+        if (data.prediction  === "positive") {
+          // Only if the response is positive, proceed to step 2
+          sendToJsApi(comment);
+        }
+        else {
+          toast.error("Negative comment detected.");
+          console.log("Negative comment detected. Not sending to JS API.");}
+      })
+      .catch(error => console.error("Error:", error));
     }
-  };
-
+    async function sendToJsApi(comment) {                  
+      try {
+        await createReview({
+          storyId,
+          comment,
+        }).unwrap();
+    
+        refetch();
+        toast.success("Review created successfully");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+ 
   const [backgroundBlur, setBackgroundBlur] = React.useState({});
   const blurDetailsClass = `blur-details`;
   const getColor = (score) => {
@@ -267,47 +287,72 @@ const StoryScreen = () => {
               />
             </div>
             <Row className='review'>
-            <Col md={6}>
-              <h2>Reviews</h2>
-              {story.reviews.length === 0 && <Message>No Reviews</Message>}
+            <Col md={12}>
+            <p style={{
+            fontSize: '2.5rem',                // Larger font size for emphasis
+            color: '#2C3E50',                  // Darker color for better readability
+            textAlign: 'center',                // Center align the text
+            margin: '40px 0',                  // More margin to separate from other elements
+            fontFamily: 'Arial, sans-serif',    // Clean font family
+            position: 'relative',               // Position for the decorative elements
+            textTransform: 'uppercase',         // Uppercase text for a bold look
+            letterSpacing: '2px'                // Spacing between letters
+        }}>
+            Comments
+            <span style={{
+                display: 'block',
+                width: '70%',                    // Wider decorative line
+                height: '6px',                   // Thicker line for emphasis
+                backgroundColor: '#fff',      // Accent color
+                margin: '10px auto',             // Centering the line
+                borderRadius: '5px',             // Rounded edges
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)' // Subtle shadow for depth
+            }}></span>
+        </p>
+                      {story.reviews.length === 0 && <Message>No Comments</Message>}
               <ListGroup variant='flush'>
                 {story.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
-                    <Rating value={review.rating} />
                     <p>{review.createdAt.substring(0, 10)}</p>
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
                 <ListGroup.Item>
-                  <h2>Write a Customer Review</h2>
+                <p style={{
+            fontSize: '2.5rem',                // Larger font size for emphasis
+            color: '#2C3E50',                  // Darker color for better readability
+            textAlign: 'center',                // Center align the text
+            margin: '40px 0',                  // More margin to separate from other elements
+            fontFamily: 'Arial, sans-serif',    // Clean font family
+            position: 'relative',               // Position for the decorative elements
+            textTransform: 'uppercase',         // Uppercase text for a bold look
+            letterSpacing: '2px'                // Spacing between letters
+        }}>
+           Write A Comment
+            <span style={{
+                display: 'block',
+                width: '70%',                    // Wider decorative line
+                height: '6px',                   // Thicker line for emphasis
+                backgroundColor: '#000',      // Accent color
+                margin: '10px auto',             // Centering the line
+                borderRadius: '5px',             // Rounded edges
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.7)' // Subtle shadow for depth
+            }}></span>
+            
+        </p>
 
                   {loadingStoryReview && <Loader />}
 
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
-                      <Form.Group className='my-2' controlId='rating'>
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control
-                          as='select'
-                          required
-                          value={rating}
-                          onChange={(e) => setRating(e.target.value)}
-                        >
-                          <option value=''>Select...</option>
-                          <option value='1'>1 - Poor</option>
-                          <option value='2'>2 - Fair</option>
-                          <option value='3'>3 - Good</option>
-                          <option value='4'>4 - Very Good</option>
-                          <option value='5'>5 - Excellent</option>
-                        </Form.Control>
-                      </Form.Group>
                       <Form.Group className='my-2' controlId='comment'>
-                        <Form.Label>Comment</Form.Label>
+                        <Form.Label style={{fontSize: '2.5rem',}}>➹C➷</Form.Label>
                         <Form.Control
                           as='textarea'
                           row='3'
                           required
+                          placeholder="Write a comment..."
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
@@ -322,7 +367,7 @@ const StoryScreen = () => {
                     </Form>
                   ) : (
                     <Message>
-                      Please <Link to='/login'>sign in</Link> to write a review
+                      Please <Link to='/login'>sign in</Link> to write a comment
                     </Message>
                   )}
                 </ListGroup.Item>
