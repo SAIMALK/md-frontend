@@ -42,7 +42,7 @@ const StoryScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(comment);
-    fetch("http://127.0.0.1:8000/predict/", {
+    fetch("https://md-fastapi.duckdns.org/predict/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
