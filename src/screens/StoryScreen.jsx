@@ -58,6 +58,7 @@ const StoryScreen = () => {
         }
         else {
           toast.error("Negative comment detected.");
+          setComment('');
           console.log("Negative comment detected. Not sending to JS API.");}
       })
       .catch(error => console.error("Error:", error));
@@ -71,6 +72,7 @@ const StoryScreen = () => {
     
         refetch();
         toast.success("Review created successfully");
+        setComment('');
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
