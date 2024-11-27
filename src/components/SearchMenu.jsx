@@ -41,23 +41,12 @@ function SearchMenu() {
           <div className="d-flex justify-content-center">
             <button
               className="btn"
-              style={{ width: "40%", borderRadius: "25px" ,backgroundColor:"#000000" , color:"#ffffff"}}
+              style={{ width: "90%", borderRadius: "25px" ,backgroundColor:"#000000" , color:"#ffffff"}}
               type="submit"
             >
               Search
             </button>
-            <button
             
-              className="btn "
-              style={{
-                backgroundColor:"#f4f4f4" , color:"#000000",
-                width: "40%",
-                borderRadius: "25px",
-                marginLeft: "5px",
-              }}
-            >
-              Story Section
-            </button>
           </div>
           </form>
         </div>
