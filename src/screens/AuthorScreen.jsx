@@ -1,17 +1,81 @@
 import { Link, useParams } from "react-router-dom";
 import React from "react";
-import Commentsection from "../components/Commentsection";
-import { useGetAuthorDetailsQuery, } from "../slices/authorApiSlice";
+import {
+  Row,
+  Col,
+  ListGroup,
+  Button,
+  Form,
+} from 'react-bootstrap';
+import Loader from "../components/Loader";
+// import Commentsection from "../components/Commentsection";
+import { useGetAuthorDetailsQuery,useCreateReviewMutation } from "../slices/authorApiSlice";
 import { useGetStoriesByAuthorIdQuery } from "../slices/storysApiSlice";
 import Message from '../components/Message';
 import Stories from "../components/Stories";
 import "../assets/styles/style.css";
-
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const AuthorScreen = () => {
   const { id :authorId } = useParams();
-const { data:author, isLoading , error } = useGetAuthorDetailsQuery(authorId);
+const { data:author, isLoading , error, refetch} = useGetAuthorDetailsQuery(authorId);
 const { data:storry, isLoading: storiesLoading, error: storiesError } = useGetStoriesByAuthorIdQuery(authorId);
+
+const [comment, setComment] = React.useState('');
+
+const { userInfo } = useSelector((state) => state.auth);
+
+const [createReview, { isLoading: loadingStoryReview }] =
+  useCreateReviewMutation(authorId);
+
+  // const {
+  //   data: story,
+  //   refetch,
+  // } = useGetStoryDetailsQuery(authorId, {
+  //   // Add options to populate the author field
+  //   select: "author", // Select only the author field
+  //   populate: "author",
+  // });
+
+const submitHandler = async (e) => {
+  e.preventDefault();
+  console.log(comment);
+  fetch("https://md-fastapi.duckdns.org/predict", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ sentence: comment }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Response from Python API:", data);
+      if (data.prediction  === "positive") {
+        // Only if the response is positive, proceed to step 2
+        sendToJsApi(comment);
+      }
+      else {
+        toast.error("Negative comment detected.");
+        console.log("Negative comment detected. Not sending to JS API.");}
+    })
+    .catch(error => console.error("Error:", error));
+  }
+  async function sendToJsApi(comment) {                  
+    try {
+      await createReview({
+        authorId,
+        comment,
+      }).unwrap();
+  
+      refetch();
+      toast.success("Review created successfully");
+      setComment('');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  }
+
   return (
     <div className="row">
       {isLoading ? (
@@ -65,7 +129,7 @@ const { data:storry, isLoading: storiesLoading, error: storiesError } = useGetSt
                 <br></br>
                 <div className="container-secondary">
                 <div className="thumbnail-synopsis">
-                <p >Gol D. Roger, a man referred to as the 'King of the Pirates,' is set to be executed by the World Government. But just before his demise, he confirms the existence of a great treasure, One Piece, located somewhere within the vast ocean known as the Grand Line. Announcing that One Piece can be claimed by anyone worthy enough to reach it, the King of the Pirates is executed and the Great Age of Pirates begins. Twenty-two years later, a young man by the name of Monkey D. Luffy is ready to embark on his own adventure, searching for One Piece and striving to become the new King of the Pirates. Armed with just a straw hat, a small boat, and an elastic body, he sets out on a fantastic journey to gather his own crew and a worthy ship that will take them across the Grand Line to claim the greatest status on the high seas.</p>
+                <p >Gol D. Roger, a man referred to as the King of the Pirates, is set to be executed by the World Government. But just before his demise, he confirms the existence of a great treasure, One Piece, located somewhere within the vast ocean known as the Grand Line. Announcing that One Piece can be claimed by anyone worthy enough to reach it, the King of the Pirates is executed and the Great Age of Pirates begins. Twenty-two years later, a young man by the name of Monkey D. Luffy is ready to embark on his own adventure, searching for One Piece and striving to become the new King of the Pirates. Armed with just a straw hat, a small boat, and an elastic body, he sets out on a fantastic journey to gather his own crew and a worthy ship that will take them across the Grand Line to claim the greatest status on the high seas.</p>
                 </div>
               </div>
               </div>
@@ -102,11 +166,100 @@ const { data:storry, isLoading: storiesLoading, error: storiesError } = useGetSt
                 </div>
               </>
             )}
-            <Commentsection 
-  url={`https://md-frontend.up.railway.app/author/${authorId}`} // Adjust the URL to include the correct endpoint for fetching comments related to the author
+            {/* <Commentsection 
+  url={`https://md-frontend.netlify.app/author/${authorId}`} // Adjust the URL to include the correct endpoint for fetching comments related to the author
   identifier={authorId} // Set the identifier dynamically
   title={author.name}
-/>
+/> */}
+
+<Row className='review'>
+            <Col md={12}>
+            <p style={{
+            fontSize: '2.5rem',                // Larger font size for emphasis
+            color: '#2C3E50',                  // Darker color for better readability
+            textAlign: 'center',                // Center align the text
+            margin: '40px 0',                  // More margin to separate from other elements
+            fontFamily: 'Arial, sans-serif',    // Clean font family
+            position: 'relative',               // Position for the decorative elements
+            textTransform: 'uppercase',         // Uppercase text for a bold look
+            letterSpacing: '2px'                // Spacing between letters
+        }}>
+            Comments
+            <span style={{
+                display: 'block',
+                width: '70%',                    // Wider decorative line
+                height: '6px',                   // Thicker line for emphasis
+                backgroundColor: '#fff',      // Accent color
+                margin: '10px auto',             // Centering the line
+                borderRadius: '5px',             // Rounded edges
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)' // Subtle shadow for depth
+            }}></span>
+        </p>
+                      {author.reviews.length === 0 && <Message>No Comments</Message>}
+              <ListGroup variant='flush'>
+                {author.reviews.map((review) => (
+                  <ListGroup.Item key={review._id}>
+                    <strong>{review.name}</strong>
+                    <p>{review.createdAt.substring(0, 10)}</p>
+                    <p>{review.comment}</p>
+                  </ListGroup.Item>
+                ))}
+                <ListGroup.Item>
+                <p style={{
+            fontSize: '2.5rem',                // Larger font size for emphasis
+            color: '#2C3E50',                  // Darker color for better readability
+            textAlign: 'center',                // Center align the text
+            margin: '40px 0',                  // More margin to separate from other elements
+            fontFamily: 'Arial, sans-serif',    // Clean font family
+            position: 'relative',               // Position for the decorative elements
+            textTransform: 'uppercase',         // Uppercase text for a bold look
+            letterSpacing: '2px'                // Spacing between letters
+        }}>
+           Write A Comment
+            <span style={{
+                display: 'block',
+                width: '70%',                    // Wider decorative line
+                height: '6px',                   // Thicker line for emphasis
+                backgroundColor: '#000',      // Accent color
+                margin: '10px auto',             // Centering the line
+                borderRadius: '5px',             // Rounded edges
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.7)' // Subtle shadow for depth
+            }}></span>
+            
+        </p>
+
+                  {loadingStoryReview && <Loader />}
+
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group className='my-2' controlId='comment'>
+                        <Form.Label style={{fontSize: '2.5rem',}}>➹C➷</Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          row='3'
+                          required
+                          placeholder="Write a comment..."
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button
+                        disabled={loadingStoryReview}
+                        type='submit'
+                        variant='primary'
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      Please <Link to='/login'>sign in</Link> to write a comment
+                    </Message>
+                  )}
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
+          </Row>
 
             <Link
               className="btn me-4"
