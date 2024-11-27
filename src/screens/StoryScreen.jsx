@@ -3,7 +3,7 @@ import React  from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import AnimatedProgressProvider from "../plugins/AnimatedProgressProvider";
 import "react-circular-progressbar/dist/styles.css";
-import Commentsection from "../components/Commentsection";
+// import Commentsection from "../components/Commentsection";
 import { easeQuadIn } from "d3-ease";
 import "../assets/styles/style.css";
 import { FaReadme } from "react-icons/fa6";
@@ -42,7 +42,7 @@ const StoryScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(comment);
-    fetch("https://md-fastapi.duckdns.org/predict/", {
+    fetch("https://md-fastapi.duckdns.org/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,6 @@ const StoryScreen = () => {
         }
         else {
           toast.error("Negative comment detected.");
-          setComment('');
           console.log("Negative comment detected. Not sending to JS API.");}
       })
       .catch(error => console.error("Error:", error));
@@ -282,11 +281,11 @@ const StoryScreen = () => {
                 )}
               </ListGroup>
             </Col> */}
-              <Commentsection
+              {/* <Commentsection
                 url={`https://md-frontend.netlify.app/story/${storyId}`} // Set the URL dynamically
                 identifier={storyId} // Set the identifier dynamically
                 title={story.title}
-              />
+              /> */}
             </div>
             <Row className='review'>
             <Col md={12}>
