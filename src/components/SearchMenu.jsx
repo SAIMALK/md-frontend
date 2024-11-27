@@ -63,8 +63,6 @@ function SearchMenu() {
               role="group"
               aria-label="Basic radio toggle button group"
             >
-            
-
               <input
                 type="radio"
                 className="btn-check"
@@ -87,27 +85,7 @@ function SearchMenu() {
                 Manhwa
               </label>
 
-              <input
-                type="radio"
-                className="btn-check"
-                name="btnradio"
-                id="manhua"
-                autoComplete="off"
-              />
-              <label className="btn btn-outline-dark" htmlFor="manhua">
-                Manhua
-              </label>
 
-              <input
-                type="radio"
-                className="btn-check"
-                name="btnradio"
-                id="webtoon"
-                autoComplete="off"
-              />
-              <label className="btn btn-outline-dark" htmlFor="novel">
-                Webtoon
-              </label>
             </div>
           </div>
         </ScrollContainer>
