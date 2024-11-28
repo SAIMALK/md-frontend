@@ -17,7 +17,6 @@ import {
   TooltipPlacement,
 } from "react-circular-menu";
 import { useGetStorysQuery } from "../slices/storysApiSlice";
-import Loader from '../components/Loader';
 
 function Header({ handleBackgroundBlur }) {
   const { userInfo } = useSelector((state) => state.auth);
@@ -110,8 +109,7 @@ function Header({ handleBackgroundBlur }) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav
-              className="me-auto my-2 my-lg-0"
-              style={{ maxHeight: "100px", marginLeft: "207px" }}
+              className="mx-auto my-2 my-lg-0"
               navbarScroll
             >
               <LinkContainer to="/Type">
@@ -132,12 +130,12 @@ function Header({ handleBackgroundBlur }) {
                 </Nav.Link>
               )}
               {/* <SearchBox/> */}
-            </Nav>
+              </Nav>
             
 
-            <Nav className="ms-auto">
+            <Nav className="ml-auto" >
               {userInfo ? (
-                <p style={{ marginBottom: "3px", marginRight: "9px" }}>
+                <p style={{ marginTop: "13px", marginRight: "9px" }}>
                   {userInfo.name}
                 </p>
               ) : (
@@ -147,14 +145,14 @@ function Header({ handleBackgroundBlur }) {
                   </Nav.Link>
                 </LinkContainer>
               )}
-            </Nav>
+            
             <>
-              {userInfo && screenWidth < 992 ? (
+              {userInfo && screenWidth < 592 ? (
                 <>
                   <li className="nav-item">
                     <a
                       className="nav-link"
-                      href="#/"
+                      href="/"
                       style={{ color: "#282828" }}
                     >
                       Home
@@ -163,7 +161,7 @@ function Header({ handleBackgroundBlur }) {
                   <li className="nav-item">
                     <a
                       className="nav-link"
-                      href="#/"
+                      href="/profile"
                       style={{ color: "#282828" }}
                     >
                       Profile
@@ -306,6 +304,7 @@ function Header({ handleBackgroundBlur }) {
                 </div>
               </span>
             )}
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
