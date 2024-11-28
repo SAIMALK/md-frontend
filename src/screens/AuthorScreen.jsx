@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import Loader from "../components/Loader";
 // import Commentsection from "../components/Commentsection";
-import { useGetAuthorDetailsQuery,useCreateReviewMutation } from "../slices/authorApiSlice";
+import { useGetAuthorDetailsQuery,useCreateRevMutation } from "../slices/authorApiSlice";
 import { useGetStoriesByAuthorIdQuery } from "../slices/storysApiSlice";
 import Message from '../components/Message';
 import Stories from "../components/Stories";
@@ -26,21 +26,12 @@ const [comment, setComment] = React.useState('');
 
 const { userInfo } = useSelector((state) => state.auth);
 
-const [createReview, { isLoading: loadingStoryReview }] =
-  useCreateReviewMutation(authorId);
-
-  // const {
-  //   data: story,
-  //   refetch,
-  // } = useGetStoryDetailsQuery(authorId, {
-  //   // Add options to populate the author field
-  //   select: "author", // Select only the author field
-  //   populate: "author",
-  // });
+const [createReview, { isLoading: loadingAuthorReview }] =
+  useCreateRevMutation();
 
 const submitHandler = async (e) => {
   e.preventDefault();
-  console.log(comment);
+
   fetch("https://md-fastapi.duckdns.org/predict", {
     method: "POST",
     headers: {
@@ -63,11 +54,11 @@ const submitHandler = async (e) => {
   }
   async function sendToJsApi(comment) {                  
     try {
+      console.log("Sending to JS API:", comment,authorId);
       await createReview({
         authorId,
         comment,
       }).unwrap();
-  
       refetch();
       toast.success("Review created successfully");
       setComment('');
@@ -228,7 +219,7 @@ const submitHandler = async (e) => {
             
         </p>
 
-                  {loadingStoryReview && <Loader />}
+                  {loadingAuthorReview && <Loader />}
 
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
@@ -244,7 +235,7 @@ const submitHandler = async (e) => {
                         ></Form.Control>
                       </Form.Group>
                       <Button
-                        disabled={loadingStoryReview}
+                        disabled={loadingAuthorReview}
                         type='submit'
                         variant='primary'
                       >
