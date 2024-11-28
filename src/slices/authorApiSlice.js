@@ -8,7 +8,7 @@ export const authorApiSlice = apiSlice.injectEndpoints({
      }),
       keepUnusedDataFor: 5,
     }),
-    createReview: builder.mutation({
+    createRev: builder.mutation({
       query: (data) => ({
         url: `${AUTHOR_URL}/${data.authorId}/reviews`,
         method: 'POST',
@@ -18,4 +18,4 @@ export const authorApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
-export const {useGetAuthorDetailsQuery, useCreateReviewMutation} = authorApiSlice;
+export const {useGetAuthorDetailsQuery, useCreateRevMutation} = authorApiSlice;
