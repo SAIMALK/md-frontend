@@ -1,13 +1,12 @@
 import ScrollContainer from "react-indiana-drag-scroll";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-function SearchMenu() {
-  const navigate = useNavigate();
+function SearchMenu({ onFilter }) {
   const { keyword: urlKeyword } = useParams();
+  const navigate = useNavigate();
 
-  // FIX: uncontrolled input - urlKeyword may be undefined
+  // Control search input
   const [keyword, setKeyword] = useState(urlKeyword || "");
 
   const submitHandler = (e) => {
@@ -19,12 +18,16 @@ function SearchMenu() {
       navigate("/");
     }
   };
+
   return (
     <div>
       <div className="container text-center">
+        {/* Search Box */}
         <div className="jumbotron" style={{ height: "161px" }}>
           <br />
-          <p className="lead">Look For Any Manga Story!</p>
+          <p className="lead">
+            <strong>Look For Any Manga Story!</strong>
+          </p>
           <form onSubmit={submitHandler}>
             <div className="mb-4">
               <input
@@ -37,26 +40,28 @@ function SearchMenu() {
                 style={{ borderRadius: "25px" }}
               />
             </div>
-          
-          <div className="d-flex justify-content-center">
-            <button
-              className="btn"
-              style={{ width: "90%", borderRadius: "25px" ,backgroundColor:"#000000" , color:"#ffffff"}}
-              type="submit"
-            >
-              Search
-            </button>
-            
-          </div>
+
+            <div className="d-flex justify-content-center">
+              <button
+                className="btn"
+                style={{
+                  width: "90%",
+                  borderRadius: "25px",
+                  backgroundColor: "#000000",
+                  color: "#ffffff",
+                }}
+                type="submit"
+              >
+                Search
+              </button>
+            </div>
           </form>
         </div>
-        <br />
-        <br />
-        <hr className="separator"  style={{ padding:"3px"}}></hr>
-        <div className="container text-center mt-4">
-          <p className="lead">Top</p>
-        </div>
 
+        <br />
+        <hr className="separator" style={{ padding: "3px" }}></hr>
+
+        {/* Filter Buttons */}
         <ScrollContainer className="inputToggles">
           <div className="inputToggleContainer">
             <div
@@ -68,8 +73,20 @@ function SearchMenu() {
                 type="radio"
                 className="btn-check"
                 name="btnradio"
+                id="all"
+                autoComplete="off"
+                onClick={() => onFilter("All")}
+              />
+              <label className="btn btn-outline-dark" htmlFor="all">
+                All
+              </label>
+              <input
+                type="radio"
+                className="btn-check"
+                name="btnradio"
                 id="manga"
                 autoComplete="off"
+                onClick={() => onFilter("Manga")}
               />
               <label className="btn btn-outline-dark" htmlFor="manga">
                 Manga
@@ -81,12 +98,11 @@ function SearchMenu() {
                 name="btnradio"
                 id="manhwa"
                 autoComplete="off"
+                onClick={() => onFilter("Manhwa")}
               />
               <label className="btn btn-outline-dark" htmlFor="manhwa">
                 Manhwa
               </label>
-
-
             </div>
           </div>
         </ScrollContainer>
