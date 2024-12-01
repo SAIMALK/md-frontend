@@ -183,9 +183,9 @@ const StoryScreen = () => {
                   <div className="gauge-container">
                     <div className="gauge-wrapper">
                       <AnimatedProgressProvider
-                        valueEnd={0}
+                        
                         valueStart={story?.rating}
-                        duration={1.4}
+                        
                         easingFunction={easeQuadIn}
                       >
                         {(value) => {
