@@ -51,7 +51,8 @@ function SearchMenu() {
           </form>
         </div>
         <br />
-        <hr className="separator"></hr>
+        <br />
+        <hr className="separator"  style={{ padding:"3px"}}></hr>
         <div className="container text-center mt-4">
           <p className="lead">Top</p>
         </div>
