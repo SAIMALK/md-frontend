@@ -1,6 +1,5 @@
-// Home.jsx
-import React from "react";
-import Stories from "../components/Stories"; // Adjust import statement
+import React, { useState, useEffect } from "react";
+import Stories from "../components/Stories";
 import "../assets/styles/style.css";
 import SearchMenu from "../components/SearchMenu";
 import { Link, useParams } from "react-router-dom";
@@ -9,15 +8,39 @@ import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 
 const Home = () => {
-  const { pageNumber, keyword} = useParams();
+  const { pageNumber, keyword: urlKeyword } = useParams();
+  const [filteredStories, setFilteredStories] = useState([]);
+  const { data, isLoading, error } = useGetStorysQuery({
+    keyword: urlKeyword,
+    pageNumber,
+  });
 
-  const { data, isLoading, error } = useGetStorysQuery({ 
-    keyword, pageNumber });
+  useEffect(() => {
+    if (data?.storys) {
+      setFilteredStories(data.storys); // Show all stories by default
+    }
+  }, [data]);
+
+  const handleFilter = (type) => {
+    if (type === "All") {
+      setFilteredStories(data.storys); // Reset to all stories
+    } else {
+      const filtered = data.storys.filter((story) => story.type === type);
+      setFilteredStories(filtered);
+    }
+  };
+
   return (
     <>
-    {keyword &&  <Link to="/" className="btn "               style={{backgroundColor:"#000000" , color:"#ffffff"}}>
-    <strong>Go Back</strong>
-              </Link>}
+      {urlKeyword && (
+        <Link
+          to="/"
+          className="btn"
+          style={{ backgroundColor: "#000000", color: "#ffffff" }}
+        >
+          <strong>Go Back</strong>
+        </Link>
+      )}
       {isLoading ? (
         <div
           style={{
@@ -34,26 +57,31 @@ const Home = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <> 
-          <SearchMenu />
-          {data?.storys?.length === 0 ? <h1>No Stories Found</h1>:null}
-          <div style={{ marginTop: "50px" }}>
-            <ul className="image-gallery">
-              <div>
-                <div className="cards">
-                  {data.storys?.map((story) => (
-                    <Stories key={story._id} story={story} />
-                  ))}
+        <>
+          <SearchMenu onFilter={handleFilter} />
+          {filteredStories.length === 0 ? (
+            <h1>No Stories Found</h1>
+          ) : (
+            <div style={{ marginTop: "50px" }}>
+              <ul className="image-gallery">
+                <div>
+                  <div className="cards">
+                    {filteredStories.map((story) => (
+                      <Stories key={story._id} story={story} />
+                    ))}
+                  </div>
                 </div>
-                
-              </div>
-            </ul>
-          </div>
-          <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''}  />
-          
+              </ul>
+            </div>
+          )}
+          <Paginate
+            pages={data.pages}
+            page={data.page}
+            keyword={urlKeyword || ""}
+          />
         </>
       )}
-    </> 
+    </>
   );
 };
 
