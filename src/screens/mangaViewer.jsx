@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 
-const chapter=['001.jpg','002.png','003.png','004.jpg','005.jpg','006.jpg','007.jpg','008.png'
+const chapter=['001.jpeg','002.png','003.png','004.jpg','005.jpg','006.jpg','007.jpg','008.png'
 ,'009.jpg','010.jpg','011.jpg','012.jpg','013.jpg','014.png','015.jpg','016.png','017.jpg','018.jpg'
 ,'019.png','020.jpg','021.jpg','022.jpg','023.jpg','024.png','025.png','026.jpg','027.jpg', 
   '028.jpg', '029.jpg', '030.jpg',
