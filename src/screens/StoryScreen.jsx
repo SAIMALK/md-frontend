@@ -291,7 +291,31 @@ const StoryScreen = () => {
             <Col md={12}>
               
                   {loadingStoryReview && <Loader />}
+ <ListGroup.Item>
+                <p style={{
+            fontSize: '2.5rem',                // Larger font size for emphasis
+            color: '#2C3E50',                  // Darker color for better readability
+            textAlign: 'center',                // Center align the text
+            margin: '40px 0',                  // More margin to separate from other elements
+            fontFamily: 'Arial, sans-serif',    // Clean font family
+            position: 'relative',               // Position for the decorative elements
+            textTransform: 'uppercase',         // Uppercase text for a bold look
+            letterSpacing: '2px'                // Spacing between letters
+        }}>
+           Write A Comment
+            <span style={{
+                display: 'block',
+                width: '70%',                    // Wider decorative line
+                height: '6px',                   // Thicker line for emphasis
+                backgroundColor: '#000',      // Accent color
+                margin: '10px auto',             // Centering the line
+                borderRadius: '5px',             // Rounded edges
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.7)' // Subtle shadow for depth
+            }}></span>
+            
+        </p>
 
+                </ListGroup.Item>
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
                       <Form.Group className='my-2' controlId='comment'>
@@ -349,31 +373,7 @@ const StoryScreen = () => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
-                <ListGroup.Item>
-                <p style={{
-            fontSize: '2.5rem',                // Larger font size for emphasis
-            color: '#2C3E50',                  // Darker color for better readability
-            textAlign: 'center',                // Center align the text
-            margin: '40px 0',                  // More margin to separate from other elements
-            fontFamily: 'Arial, sans-serif',    // Clean font family
-            position: 'relative',               // Position for the decorative elements
-            textTransform: 'uppercase',         // Uppercase text for a bold look
-            letterSpacing: '2px'                // Spacing between letters
-        }}>
-           Write A Comment
-            <span style={{
-                display: 'block',
-                width: '70%',                    // Wider decorative line
-                height: '6px',                   // Thicker line for emphasis
-                backgroundColor: '#000',      // Accent color
-                margin: '10px auto',             // Centering the line
-                borderRadius: '5px',             // Rounded edges
-                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.7)' // Subtle shadow for depth
-            }}></span>
-            
-        </p>
-
-                </ListGroup.Item>
+               
               </ListGroup>
             </Col>
           </Row>
