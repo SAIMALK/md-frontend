@@ -69,6 +69,7 @@ const MangaViewer = () => {
         {imageUrls.length > 0 ? (
           imageUrls.map((url, index) => (
             <img
+              loading="lazy"
               key={index}
               src={`/boss/ch${no}/${url}`} // Assuming "url" is the image filename
               alt={`Page ${index + 1}/${url}`}
