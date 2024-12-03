@@ -18,13 +18,13 @@ const Type = () => {
     }
   }, [data]);
 
-  const handleFilterOngoing = () => {
-    const filtered = completedStories.filter((story) => story.type === "Novel");
+  const handleFilterManga = () => {
+    const filtered = completedStories.filter((story) => story.type === "Manga");
     setFilteredCompleted(filtered);
   };
 
-  const handleFilterCompleted = () => {
-    const filtered = completedStories.filter((story) => story.type === "Story");
+  const handleFilterManhwa = () => {
+    const filtered = completedStories.filter((story) => story.type === "Manhwa");
     setFilteredCompleted(filtered);
   };
 
@@ -45,16 +45,16 @@ const Type = () => {
           <button
             className="btn btn-light"
             style={{ marginRight: "10px", marginBottom: "10px" }}
-            onClick={handleFilterOngoing}
+            onClick={handleFilterManga}
           >
-            Filter Novel
+            Filter Manga
           </button>
           <button
             className="btn btn-light"
             style={{ marginLeft: "90px", marginBottom: "10px" }}
-            onClick={handleFilterCompleted}
+            onClick={handleFilterManhwa}
           >
-            Filter Stories
+            Filter Manhwa
           </button>
           <button
             className="btn btn-light"
