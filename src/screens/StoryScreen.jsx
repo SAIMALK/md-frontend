@@ -289,6 +289,35 @@ const StoryScreen = () => {
             </div>
             <Row className='review'>
             <Col md={12}>
+              
+                  {loadingStoryReview && <Loader />}
+
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group className='my-2' controlId='comment'>
+                        <Form.Label style={{fontSize: '2.5rem',}}>➹C➷</Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          row='3'
+                          required
+                          placeholder="Write a comment..."
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button
+                        disabled={loadingStoryReview}
+                        type='submit'
+                        variant='primary'
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      Please <Link to='/login'>sign in</Link> to write a comment
+                    </Message>
+                  )}
             <p style={{
             fontSize: '2.5rem',                // Larger font size for emphasis
             color: '#2C3E50',                  // Darker color for better readability
@@ -299,6 +328,7 @@ const StoryScreen = () => {
             textTransform: 'uppercase',         // Uppercase text for a bold look
             letterSpacing: '2px'                // Spacing between letters
         }}>
+              
             Comments
             <span style={{
                 display: 'block',
@@ -343,34 +373,6 @@ const StoryScreen = () => {
             
         </p>
 
-                  {loadingStoryReview && <Loader />}
-
-                  {userInfo ? (
-                    <Form onSubmit={submitHandler}>
-                      <Form.Group className='my-2' controlId='comment'>
-                        <Form.Label style={{fontSize: '2.5rem',}}>➹C➷</Form.Label>
-                        <Form.Control
-                          as='textarea'
-                          row='3'
-                          required
-                          placeholder="Write a comment..."
-                          value={comment}
-                          onChange={(e) => setComment(e.target.value)}
-                        ></Form.Control>
-                      </Form.Group>
-                      <Button
-                        disabled={loadingStoryReview}
-                        type='submit'
-                        variant='primary'
-                      >
-                        Submit
-                      </Button>
-                    </Form>
-                  ) : (
-                    <Message>
-                      Please <Link to='/login'>sign in</Link> to write a comment
-                    </Message>
-                  )}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
