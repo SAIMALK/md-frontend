@@ -172,7 +172,7 @@ function Header({ handleBackgroundBlur }) {
                     <a
                       className="nav-link"
                       href="#/"
-                      onClick={() => alert("No info just yet :(")}
+                      onClick={() => alert("Enjoy reading your favorite manga on our site!")}
                       style={{ color: "#282828" }}
                     >
                       Info
