@@ -7,7 +7,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { easeQuadIn } from "d3-ease";
 import "../assets/styles/style.css";
 import { FaReadme } from "react-icons/fa6";
-import { useGetStoryDetailsQuery , useCreateReviewMutation,} from "../slices/storysApiSlice";
+import { useGetStoryDetailsQuery , useCreateReviewMutation,useDeleteCommentMutation } from "../slices/storysApiSlice";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
@@ -35,6 +35,7 @@ const StoryScreen = () => {
   const [comment, setComment] = React.useState('');
 
   const { userInfo } = useSelector((state) => state.auth);
+  const [deleteComment, { isLoading: loadingDelete }] = useDeleteCommentMutation();
 
   const [createReview, { isLoading: loadingStoryReview }] =
     useCreateReviewMutation();
@@ -42,7 +43,7 @@ const StoryScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(comment);
-    fetch("https://md-fastapi.duckdns.org/predict", {
+    fetch("http://localhost:8000/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,9 +77,24 @@ const StoryScreen = () => {
         toast.error(err?.data?.message || err.error);
       }
     }
- 
+
+  
+    const deleteHandler = async (commentId) => {
+      {console.log("review._id" , commentId)}
+      if (window.confirm("Are you sure you want to delete this comment?")) {
+        try {
+          {console.log("aa",commentId)}
+          await deleteComment({ storyId, commentId }).unwrap();
+          
+          refetch();
+          toast.success("Comment deleted successfully");
+        } catch (err) {
+          toast.error(err?.data?.message || err.error);
+        }
+      }
+    };
   const [backgroundBlur, setBackgroundBlur] = React.useState({});
-  const blurDetailsClass = `blur-details`;
+  const blurDetailsClass = blur-details;
   const getColor = (score) => {
     if (score >= 7.5) {
       return "#00A300"; // Green for high scores
@@ -93,18 +109,18 @@ const StoryScreen = () => {
     const bgCover = story?.bgCover;
 
     setBackgroundBlur({
-      backgroundImage: `url("${bgCover || story?.cover}")`,
+      backgroundImage: url("${bgCover || story?.cover}"),
       width: "100vw",
       marginLeft: "calc(50% - 50vw)",
       backgroundSize: "cover",
-      backgroundPosition: `${bgCover ? "" : "center"}`,
+      backgroundPosition: ${bgCover ? "" : "center"},
       marginBottom: "20px",
       boxShadow: `${
         bgCover
           ? "0px 0px 10px 5px rgba(0, 0, 0, 0.5)"
           : " inset 0 0 0 2000px rgba(28, 28, 28, 0.75)"
       } `,
-      filter: `${bgCover ? "" : "blur(5px)"}`,
+      filter: ${bgCover ? "" : "blur(5px)"},
     });
   }, [story]);
 
@@ -163,7 +179,7 @@ const StoryScreen = () => {
                     <p>
                       <strong>{story.chapters} Chapters</strong>
                     </p>
-                    <Link to={`/Story/${story._id}/chapters/`}>
+                    <Link to={/Story/${story._id}/chapters/}>
                       <div>
                         <button
                           style={{
@@ -193,7 +209,7 @@ const StoryScreen = () => {
                             <CircularProgressbar
                               value={value}
                               maxValue={10}
-                              text={`${story.rating ? story.rating : "-"}`}
+                              text={${story.rating ? story.rating : "-"}}
                               styles={buildStyles({
                                 pathTransition: "none",
                                 pathColor: getColor(story.rating),
@@ -237,7 +253,7 @@ const StoryScreen = () => {
 
                 <li key={5} className="list-group-item">
                   <strong>Author:</strong>
-                  <Link to={`/author/${story.author._id}`}>
+                  <Link to={/author/${story.author._id}}>
                     {" "}
                     {story.author.name || "-"}
                   </Link>
@@ -255,7 +271,7 @@ const StoryScreen = () => {
                   { length: Math.min(story.chapters, 5) },
                   (_, index) => (
                     <Link
-                      to={`/Story/${story._id}/chapter/${index + 1}`}
+                      to={/Story/${story._id}/chapter/${index + 1}}
                       key={index}
                     >
                       <ListGroup.Item
@@ -269,7 +285,7 @@ const StoryScreen = () => {
                   )
                 )}
                 {story.chapters > 5 && (
-                  <Link to={`/Story/${story._id}`}>
+                  <Link to={/Story/${story._id}}>
                     <ListGroup.Item
                       variant="primary"
                       className="mr-2 mb-2"
@@ -282,7 +298,7 @@ const StoryScreen = () => {
               </ListGroup>
             </Col> */}
               {/* <Commentsection
-                url={`https://md-frontend.netlify.app/story/${storyId}`} // Set the URL dynamically
+                url={https://md-frontend.netlify.app/story/${storyId}} // Set the URL dynamically
                 identifier={storyId} // Set the identifier dynamically
                 title={story.title}
               /> */}
@@ -364,17 +380,32 @@ const StoryScreen = () => {
                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)' // Subtle shadow for depth
             }}></span>
         </p>
-                      {story.reviews.length === 0 && <Message>No Comments</Message>}
-              <ListGroup variant='flush'>
-                {story.reviews.map((review) => (
-                  <ListGroup.Item key={review._id}>
-                    <strong>{review.name}</strong>
-                    <p>{review.createdAt.substring(0, 10)}</p>
-                    <p>{review.comment}</p>
-                  </ListGroup.Item>
-                ))}
-               
-              </ListGroup>
+        {story.reviews.length === 0 && <Message>No Comments</Message>}
+        <ListGroup variant="flush">
+  {story.reviews.map((review) => (
+    <ListGroup.Item
+      key={review._id}
+      className="d-flex justify-content-between align-items-center"
+      >
+      
+      <div>
+        <strong>{review.name}</strong>
+        <p className="mb-1">{review.createdAt.substring(0, 10)}</p>
+        <p className="mb-0">{review.comment}</p>
+      </div>
+      {userInfo?.isAdmin && (
+        <Button
+          variant="danger"
+          onClick={() => deleteHandler(review._id)}
+          className="btn-sm"
+        >
+          Delete
+        </Button>
+      )}
+    </ListGroup.Item>
+  ))}
+</ListGroup>
+
             </Col>
           </Row>
             <Link
