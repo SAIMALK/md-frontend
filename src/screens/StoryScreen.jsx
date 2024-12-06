@@ -119,7 +119,7 @@ const StoryScreen = () => {
         bgCover
           ? "0px 0px 10px 5px rgba(0, 0, 0, 0.5)"
           : " inset 0 0 0 2000px rgba(28, 28, 28, 0.75)",
-      filter: ${bgCover ? "" : "blur(5px)"},
+      filter: bgCover ? "" : "blur(5px)",
     });
   }, [story]);
 
