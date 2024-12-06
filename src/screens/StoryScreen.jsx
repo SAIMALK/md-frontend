@@ -43,7 +43,7 @@ const StoryScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(comment);
-    fetch("http://localhost:8000/predict", {
+    fetch("https://md-fastapi.duckdns.org/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const StoryScreen = () => {
       }
     };
   const [backgroundBlur, setBackgroundBlur] = React.useState({});
-  const blurDetailsClass = blur-details;
+  const blurDetailsClass = `blur-details`;
   const getColor = (score) => {
     if (score >= 7.5) {
       return "#00A300"; // Green for high scores
@@ -109,17 +109,17 @@ const StoryScreen = () => {
     const bgCover = story?.bgCover;
 
     setBackgroundBlur({
-      backgroundImage: url("${bgCover || story?.cover}"),
+       backgroundImage: `url("${bgCover || story?.cover}")`,
       width: "100vw",
       marginLeft: "calc(50% - 50vw)",
       backgroundSize: "cover",
-      backgroundPosition: bgCover ? "" : "center",
+      backgroundPosition: `${bgCover ? "" : "center"}`,
       marginBottom: "20px",
       boxShadow: 
         bgCover
           ? "0px 0px 10px 5px rgba(0, 0, 0, 0.5)"
           : " inset 0 0 0 2000px rgba(28, 28, 28, 0.75)",
-      filter: bgCover ? "" : "blur(5px)",
+      filter: `${bgCover ? "" : "blur(5px)"}`,
     });
   }, [story]);
 
@@ -178,7 +178,7 @@ const StoryScreen = () => {
                     <p>
                       <strong>{story.chapters} Chapters</strong>
                     </p>
-                    <Link to={/Story/${story._id}/chapters/}>
+                    <Link to={`/Story/${story._id}/chapters/`}>
                       <div>
                         <button
                           style={{
@@ -208,7 +208,7 @@ const StoryScreen = () => {
                             <CircularProgressbar
                               value={value}
                               maxValue={10}
-                              text={${story.rating ? story.rating : "-"}}
+                              text={`${story.rating ? story.rating : "-"}`}
                               styles={buildStyles({
                                 pathTransition: "none",
                                 pathColor: getColor(story.rating),
@@ -252,7 +252,7 @@ const StoryScreen = () => {
 
                 <li key={5} className="list-group-item">
                   <strong>Author:</strong>
-                  <Link to={/author/${story.author._id}}>
+                  <Link to={`/author/${story.author._id}`}>
                     {" "}
                     {story.author.name || "-"}
                   </Link>
