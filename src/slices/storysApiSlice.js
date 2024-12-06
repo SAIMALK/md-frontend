@@ -25,7 +25,7 @@ export const storysApiSlice = apiSlice.injectEndpoints({
     }),
     createStory: builder.mutation({
       query: () => ({
-        url: ${STORYS_URL},
+        url: `${STORYS_URL}`,
         method: 'POST',
       }),
       invalidatesTags: ['Story'],
