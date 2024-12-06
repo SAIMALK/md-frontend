@@ -109,18 +109,20 @@ const StoryScreen = () => {
     const bgCover = story?.bgCover;
 
     setBackgroundBlur({
-    backgroundImage: `url("${bgCover || story?.cover}")`,
-    width: "100vw",
-    marginLeft: "calc(50% - 50vw)",
-    backgroundSize: "cover",
-    backgroundPosition: bgCover ? "" : "center",
-    marginBottom: "20px",
-    boxShadow: bgCover
-      ? "0px 0px 10px 5px rgba(0, 0, 0, 0.5)"
-      : "inset 0 0 0 2000px rgba(28, 28, 28, 0.75)",
-    filter: bgCover ? "" : "blur(5px)",
-  });
-}, [story]);
+      backgroundImage: url("${bgCover || story?.cover}"),
+      width: "100vw",
+      marginLeft: "calc(50% - 50vw)",
+      backgroundSize: "cover",
+      backgroundPosition: ${bgCover ? "" : "center"},
+      marginBottom: "20px",
+      boxShadow: `${
+        bgCover
+          ? "0px 0px 10px 5px rgba(0, 0, 0, 0.5)"
+          : " inset 0 0 0 2000px rgba(28, 28, 28, 0.75)"
+      } `,
+      filter: ${bgCover ? "" : "blur(5px)"},
+    });
+  }, [story]);
 
   return (
     <div className="row">
